@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>סוכן קוד מקומי</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="סוכן קוד מקומי">
+        <span class="brand-mark">⌘</span><span><strong>סוכן קוד</strong><small>סביבת עבודה מקומית</small></span>
+      </a>
+      <div class="project-control">
+        <label for="project-path">פרויקט / קובץ</label>
+        <div class="path-input">
+          <input id="project-path" type="text" placeholder="C:\Projects\my-app" dir="ltr" autocomplete="off">
+          <button id="refresh-status" class="icon-button" title="רענון מצב Git" aria-label="רענון">↻</button>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span id="git-badge" class="git-badge">בחרו פרויקט</span>
+        <button id="diff-open" class="secondary-button" disabled>צפה בשינויים <span>(Diff)</span></button>
+        <button id="settings-open" class="icon-button settings-button" aria-label="הגדרות" title="הגדרות">⚙</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section id="chat" class="chat" aria-live="polite">
+        <div class="welcome">
+          <div class="welcome-icon">✳</div>
+          <h1>בואו נבנה משהו טוב.</h1>
+          <p>בחרו תיקיית פרויקט, תארו את השינוי, והסוכן יעבוד לפי הכללים שלכם.</p>
+          <div class="welcome-hint">הקבצים והשינויים נשארים במחשב שלכם.</div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="composer-wrap">
+      <div id="approval-panel" class="approval-panel" hidden>
+        <div><strong>נדרשת החלטה לפני Commit ו-Push</strong><p id="approval-message"></p></div>
+        <div class="approval-actions">
+          <button id="approve-button" class="primary-button">אשר ודחוף ל-main</button>
+          <button id="cancel-approval" class="secondary-button">בטל / שמור מקומית בלבד</button>
+        </div>
+      </div>
+      <div class="composer-card">
+        <div class="mode-row">
+          <span class="mode-label">מצב עבודה</span>
+          <div class="mode-switch" role="group" aria-label="בחירת ענף">
+            <button type="button" class="mode-option active" data-mode="ai">ענף AI ייעודי <code>(ai-agent)</code></button>
+            <button type="button" class="mode-option" data-mode="main">ענף ראשי <code>(main)</code></button>
+          </div>
+        </div>
+        <form id="prompt-form" class="prompt-form">
+          <textarea id="prompt" rows="2" placeholder="מה תרצו לשנות בפרויקט?" aria-label="הנחיה לסוכן"></textarea>
+          <button id="send-button" class="send-button" type="submit" aria-label="שליחה">↑</button>
+        </form>
+        <div class="composer-foot"><span>Enter לשליחה · Shift+Enter לשורה חדשה</span><span id="model-label"></span></div>
+      </div>
+      <div class="footer-note">בדקו את השינויים לפני מיזוג לענף הראשי</div>
+    </footer>
+  </div>
+
+  <dialog id="settings-dialog" class="dialog">
+    <form id="settings-form" method="dialog">
+      <div class="dialog-heading"><div><span class="eyebrow">התאמה אישית</span><h2>הגדרות סוכן</h2></div><button class="icon-button close-dialog" type="button" aria-label="סגירה">×</button></div>
+      <p class="dialog-description">הכללים נשמרים מקומית בקובץ <code dir="ltr">agent_rules.json</code>.</p>
+      <label>כללי מערכת קבועים<textarea id="system-rules" rows="5"></textarea></label>
+      <label>נתיב לקובץ כללים חיצוני (אופציונלי)<input id="external-rules" dir="ltr" placeholder="C:\path\to\rules.md"></label>
+      <div class="two-fields">
+        <label>ענף AI<input id="ai-branch" dir="ltr" required></label>
+        <label>ענף ראשי<input id="main-branch" dir="ltr" required></label>
+      </div>
+      <label>נתיבים להתעלמות <small>נתיב אחד בכל שורה</small><textarea id="ignored-paths" rows="5" dir="ltr"></textarea></label>
+      <div class="dialog-actions"><span id="settings-message" role="status"></span><button class="primary-button" type="submit">שמירת הגדרות</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="diff-dialog" class="dialog diff-dialog">
+    <div class="dialog-heading"><div><span class="eyebrow">סקירת קוד</span><h2>השינויים בפרויקט</h2></div><button class="icon-button close-dialog" type="button" aria-label="סגירה">×</button></div>
+    <div id="diff-content" class="diff-content" dir="ltr"><p class="empty-diff">עדיין אין שינויים להצגה.</p></div>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

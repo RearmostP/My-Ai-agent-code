@@ -1,0 +1,16 @@
+{
+  "ai_branch_name": "ai-agent",
+  "main_branch_name": "main",
+  "system_rules": [],
+  "external_rules_file_path": "",
+  "ignored_paths": [
+    ".venv",
+    "venv",
+    ".git",
+    "__pycache__",
+    ".env",
+    "key.env",
+    "node_modules",
+    ".idea"
+  ]
+}
